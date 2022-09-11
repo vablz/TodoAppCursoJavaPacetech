@@ -1,5 +1,5 @@
 //.
-package todoApp;
+package Main;
 
 import controller.ProjectController;
 import controller.TaskController;

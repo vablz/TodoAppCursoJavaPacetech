@@ -1,5 +1,13 @@
-todoApp/Main.java
- todoApp.Main
+view/ProjectDialogScreen.java
+ view.ProjectDialogScreen
+ view.ProjectDialogScreen$1
+ view.ProjectDialogScreen$2
+ view.ProjectDialogScreen$3
+ view.ProjectDialogScreen$3$1
+controller/ProjectController.java
+ controller.ProjectController
+Main/Main.java
+ Main.Main
 model/Task.java
  model.Task
 controller/TaskController.java
@@ -8,5 +16,16 @@ model/Project.java
  model.Project
 util/ConnectionFactory.java
  util.ConnectionFactory
-controller/ProjectController.java
- controller.ProjectController
+view/TaskDialogScreen.java
+ view.TaskDialogScreen
+ view.TaskDialogScreen$1
+ view.TaskDialogScreen$2
+ view.TaskDialogScreen$3
+ view.TaskDialogScreen$3$1
+view/MainScreen.java
+ view.MainScreen
+ view.MainScreen$1
+ view.MainScreen$2
+ view.MainScreen$3
+ view.MainScreen$4
+ view.MainScreen$5
