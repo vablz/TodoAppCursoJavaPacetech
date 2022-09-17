@@ -90,7 +90,7 @@ public class TaskController {
 
     }
 
-    public void removeById(int taskId) throws SQLException {
+    public void removeById(int taskId){
 
         String sql = "DELETE FROM tasks WHERE id = ?";
         Connection connection = null;
@@ -149,4 +149,9 @@ public class TaskController {
                 
         return tasks;
     }
+
+    public List<Task> getAll(int PROPERTIES) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

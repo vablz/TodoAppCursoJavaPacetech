@@ -1,3 +1,5 @@
+util/ConnectionFactory.java
+ util.ConnectionFactory
 view/ProjectDialogScreen.java
  view.ProjectDialogScreen
  view.ProjectDialogScreen$1
@@ -6,16 +8,12 @@ view/ProjectDialogScreen.java
  view.ProjectDialogScreen$3$1
 controller/ProjectController.java
  controller.ProjectController
-Main/Main.java
- Main.Main
 model/Task.java
  model.Task
-controller/TaskController.java
- controller.TaskController
+Main/Main.java
+ Main.Main
 model/Project.java
  model.Project
-util/ConnectionFactory.java
- util.ConnectionFactory
 view/TaskDialogScreen.java
  view.TaskDialogScreen
  view.TaskDialogScreen$1
@@ -29,3 +27,10 @@ view/MainScreen.java
  view.MainScreen$3
  view.MainScreen$4
  view.MainScreen$5
+ view.MainScreen$6
+ view.MainScreen$7
+ view.MainScreen$8
+controller/TaskController.java
+ controller.TaskController
+util/TaskTableModel.java
+ util.TaskTableModel
