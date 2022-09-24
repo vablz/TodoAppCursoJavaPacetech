@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Project;
 import model.Task;
 import util.ConnectionFactory;
 
@@ -21,13 +22,13 @@ import util.ConnectionFactory;
 public class TaskController {
 
     public void save(Task task) {
-        String sql = "INSERT INTO tasks (idProject"
+        String sql = "INSERT INTO tasks (idProject,"
                 + "name,"
                 + "description,"
                 + "completed,"
                 + "notes,"
                 + "deadline,"
-                + "createdId,"
+                + "createdAt,"
                 + "updatedAt,) VALUES (?,?,?,?,?,?,?,?)";
 
         Connection connection = null;
@@ -132,9 +133,10 @@ public class TaskController {
         task.setDescription(resultSet.getString("description"));
         task.setNotes(resultSet.getString("notes"));
         task.setIsCompleted(resultSet.getBoolean("completed"));
+        task.setNotes(resultSet.getString("notes"));
         task.setDeadline(resultSet.getDate("deadline"));
-        task.setCreatedAt(resultSet.getDate("createdAt"));
-        task.setUpdatedAt(resultSet.getDate("updatedAt"));
+        task.setCreatedAt(resultSet.getTimestamp("createdAt"));
+        task.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
         
         tasks.add(task);
         
@@ -150,8 +152,35 @@ public class TaskController {
         return tasks;
     }
 
-    public List<Task> getAll(int PROPERTIES) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Task> getAll(int PROPERTIES) throws SQLException {
+        String sql = "SELECT * FROM tasks";
+        List<Task> tasks = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+         try {
+        connection = ConnectionFactory.getConnection();
+        statement = connection.prepareStatement(sql);
+        resultSet = statement.executeQuery();
+        while (resultSet.next()){
+        Task task = new Task();
+        task.setId(resultSet.getInt("id"));
+        task.setIdProject(resultSet.getInt("id"));
+        task.setName(resultSet.getString("name"));
+        task.setIsCompleted(resultSet.getBoolean("completed"));
+        task.setDescription(resultSet.getString("description"));
+        task.setCreatedAt(resultSet.getDate("createdAt"));
+        task.setUpdatedAt(resultSet.getDate("updatedAt"));
+        
+        tasks.add(task);
+        }
+        } catch (SQLException eALL) {
+            throw new RuntimeException("Erro ao buscar as tasks" + eALL.getMessage() + eALL);
+        } finally {
+            ConnectionFactory.closeConnection(connection, statement, resultSet);
+        }
+       
+        return tasks;
     }
 
 }

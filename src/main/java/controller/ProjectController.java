@@ -21,7 +21,7 @@ public class ProjectController {
         String sql = "INSERT INTO projects (name, "
                 + "description, "
                 + "createdAt, "
-                + "updateAt, "
+                + "updatedAt, "
                 + "VALUES (?, ?, ?, ?)";
 
         Connection connection = null;
@@ -47,7 +47,7 @@ public class ProjectController {
                 + "name = ?, "
                 + "description = ?, "
                 + "createdAt = ?, "
-                + "updateAt = ?, "
+                + "updatedAt = ?, "
                 + "WHERE id = ?";
 
         Connection connection = null;
@@ -79,7 +79,7 @@ public class ProjectController {
         connection = ConnectionFactory.getConnection();
         statement = connection.prepareStatement(sql);
         resultSet = statement.executeQuery();
-        
+        while (resultSet.next()){
         Project project = new Project();
         project.setId(resultSet.getInt("id"));
         project.setName(resultSet.getString("name"));
@@ -88,8 +88,9 @@ public class ProjectController {
         project.setUpdatedAt(resultSet.getDate("updatedAt"));
         
         projects.add(project);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao buscar os projetos", ex);
+        }
+        } catch (SQLException eALL) {
+            throw new RuntimeException("Erro ao buscar os projetos" + eALL.getMessage() + eALL);
         } finally {
             ConnectionFactory.closeConnection(connection, statement, resultSet);
         }

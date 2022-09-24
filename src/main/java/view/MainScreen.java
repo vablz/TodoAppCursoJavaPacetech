@@ -10,10 +10,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import model.Project;
 import model.Task;
+import util.ButtonColumnCellRederer;
+import util.DeadlineColumnCellRederer;
 import util.TaskTableModel;
 
 /**
@@ -29,11 +34,13 @@ public class MainScreen extends javax.swing.JFrame {
     TaskTableModel taskModel;
     
     
-    public MainScreen() {
-        initComponents();
-        decorateTableTask();
-        initDateController();
-        initComponetsModel();
+    public MainScreen() throws SQLException {
+      initComponents();
+        
+      setLocationRelativeTo(null);
+      initDateController();
+      initComponetsModel();
+      decorateTableTask();
     }
 
     /**
@@ -336,7 +343,11 @@ public class MainScreen extends javax.swing.JFrame {
             public void windowClosed(WindowEvent e){
                 int projectIndex = jListProjects.getSelectedIndex();
                 Project project = (Project) projectsModel.get(projectIndex);
-                loadTasks(project.getId());
+                try {
+                    loadTasks(project.getId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         
     });
@@ -361,8 +372,15 @@ public class MainScreen extends javax.swing.JFrame {
                 
                 int projectIndex = jListProjects.getSelectedIndex();
                 Project project = (Project) projectsModel.get(projectIndex);
-                loadTasks(project.getId());
+            {
+                try {
+                    loadTasks(project.getId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
                 break;
+
                 
         }
     }//GEN-LAST:event_jTableTasksMouseClicked
@@ -371,7 +389,11 @@ public class MainScreen extends javax.swing.JFrame {
         
         int projectIndex = jListProjects.getSelectedIndex();
         Project project = (Project) projectsModel.get(projectIndex);
-        loadTasks(project.getId());
+        try {
+            loadTasks(project.getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_jListProjectsMouseClicked
 
@@ -405,7 +427,11 @@ public class MainScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainScreen().setVisible(true);
+                try {
+                    new MainScreen().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -440,8 +466,13 @@ public void decorateTableTask (){
     jTableTasks.getTableHeader().setBackground (new Color (0, 153, 102));
     jTableTasks.getTableHeader().setForeground (new Color (255, 255, 255));
     
+    jTableTasks.getColumnModel().getColumn(2).setCellRenderer(new DeadlineColumnCellRederer());
+    
+    jTableTasks.getColumnModel().getColumn(4).setCellRenderer(new ButtonColumnCellRederer("edit"));
+    
+    jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRederer("delete"));
     //Criando um sort automático para as colunas da table
-    jTableTasks.setAutoCreateRowSorter(true);
+    //jTableTasks.setAutoCreateRowSorter(true);
     
 }
     
@@ -450,7 +481,7 @@ public void initDateController(){
     taskController = new TaskController();
 }
 
-public void initComponetsModel(){
+public void initComponetsModel() throws SQLException{
    projectsModel = new DefaultListModel();
    loadProjects();
    
@@ -460,11 +491,12 @@ public void initComponetsModel(){
    if(!projectsModel.isEmpty()){
        jListProjects.setSelectedIndex(0);
        Project project = (Project) projectsModel.get(0);
+       jListProjects.setModel(projectsModel);
        loadTasks(project.getId());
    }
 }
 
-public void loadTasks(int idProject){
+public void loadTasks(int idProject) throws SQLException{
     List<Task> tasks = taskController.getAll(idProject);
     taskModel.setTasks(tasks);
     
